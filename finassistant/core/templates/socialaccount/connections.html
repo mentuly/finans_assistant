@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Підтвердження підключення | Фінансовий помічник{% endblock %}
+
+{% block extra_head %}
+<style>
+.auth-container {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(25, 118, 210, 0.15);
+    padding: 3rem 2.5rem;
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid #e3eafc;
+    text-align: center;
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: white;
+}
+
+.auth-card h1 {
+    color: #1976d2;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.auth-card p {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.auth-btn {
+    background: linear-gradient(135deg, #1976d2 0%, #42a5f5 100%);
+    border: none;
+    border-radius: 12px;
+    padding: 0.75rem 2rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0.5rem;
+    min-width: 150px;
+}
+
+.auth-btn:hover {
+    background: linear-gradient(135deg, #1565c0 0%, #1976d2 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(25, 118, 210, 0.3);
+    color: white;
+    text-decoration: none;
+}
+
+.account-info {
+    background: #f8f9fc;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border: 1px solid #e3eafc;
+    text-align: left;
+}
+
+.account-info h3 {
+    color: #1976d2;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.account-info .row {
+    margin-bottom: 0.5rem;
+}
+
+.account-info .col-4 {
+    font-weight: 600;
+    color: #333;
+}
+
+.account-info .col-8 {
+    color: #666;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="success-icon">
+            ✓
+        </div>
+        
+        <h1>Успішно підключено!</h1>
+        <p>Ваш аккаунт <strong>{{ account.provider|title }}</strong> успішно підключено до нашого сайту. Тепер ви можете використовувати його для входу.</p>
+        
+        {% if account %}
+        <div class="account-info">
+            <h3>Підключений аккаунт:</h3>
+            <div class="container-fluid">
+                {% if account.extra_data.name %}
+                <div class="row">
+                    <div class="col-4"><strong>Ім'я:</strong></div>
+                    <div class="col-8">{{ account.extra_data.name }}</div>
+                </div>
+                {% endif %}
+                {% if account.extra_data.email %}
+                <div class="row">
+                    <div class="col-4"><strong>Email:</strong></div>
+                    <div class="col-8">{{ account.extra_data.email }}</div>
+                </div>
+                {% endif %}
+                {% if account.extra_data.login %}
+                <div class="row">
+                    <div class="col-4"><strong>Логін:</strong></div>
+                    <div class="col-8">{{ account.extra_data.login }}</div>
+                </div>
+                {% endif %}
+                <div class="row">
+                    <div class="col-4"><strong>Провайдер:</strong></div>
+                    <div class="col-8">{{ account.provider|title }}</div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <a href="{% url 'dashboard' %}" class="auth-btn">
+            Перейти до панелі
+        </a>
+    </div>
+</div>
+{% endblock %}

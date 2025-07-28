@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Ваші операції{% endblock %}
+{% block content %}
+<h1>Останні операції</h1>
+<div class="mb-4">
+    <a href="{% url 'add_transaction' 'income' %}" class="btn btn-success animated-btn">+ Дохід</a>
+    <a href="{% url 'add_transaction' 'expense' %}" class="btn btn-danger animated-btn ms-2">+ Витрата</a>
+</div>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Сума</th>
+            <th>Категорія</th>
+            <th>Опис</th>
+            <th>Дата</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for t in transactions %}
+        <tr>
+            <td>{% if t.category.type == 'income' %}<span class="text-success">+{{ t.amount }}</span>{% else %}<span class="text-danger">-{{ t.amount }}</span>{% endif %} ₴</td>
+            <td>{{ t.category.name }}</td>
+            <td>{{ t.description }}</td>
+            <td>{{ t.date }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4" class="text-center">Операцій ще немає.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

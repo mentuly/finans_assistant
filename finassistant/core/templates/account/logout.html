@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Вихід | Фінансовий помічник{% endblock %}
+
+{% block extra_head %}
+<style>
+.auth-container {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(25, 118, 210, 0.15);
+    padding: 3rem 2.5rem;
+    width: 100%;
+    max-width: 450px;
+    border: 1px solid #e3eafc;
+    text-align: center;
+}
+
+.logout-icon {
+    font-size: 4rem;
+    color: #1976d2;
+    margin-bottom: 1.5rem;
+}
+
+.auth-card h1 {
+    color: #1976d2;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.auth-card p {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.auth-btn {
+    background: linear-gradient(135deg, #1976d2 0%, #42a5f5 100%);
+    border: none;
+    border-radius: 12px;
+    padding: 0.75rem 2rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    margin: 0.5rem;
+    min-width: 120px;
+}
+
+.auth-btn:hover {
+    background: linear-gradient(135deg, #1565c0 0%, #1976d2 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(25, 118, 210, 0.3);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    border: none;
+    border-radius: 12px;
+    padding: 0.75rem 2rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    margin: 0.5rem;
+    min-width: 120px;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(108, 117, 125, 0.3);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="logout-icon">👋</div>
+        <h1>До побачення!</h1>
+        <p>Ви впевнені, що хочете вийти з вашого акаунту?</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn auth-btn">Так, вийти</button>
+            <a href="{% url 'dashboard' %}" class="btn btn-secondary">Скасувати</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

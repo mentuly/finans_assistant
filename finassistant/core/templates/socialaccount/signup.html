@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Підключення аккаунту | Фінансовий помічник{% endblock %}
+
+{% block extra_head %}
+<style>
+.auth-container {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(25, 118, 210, 0.15);
+    padding: 3rem 2.5rem;
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid #e3eafc;
+    text-align: center;
+}
+
+.provider-logo {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.google-logo {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iNDAiIGZpbGw9IiNmZmYiLz4KPHBhdGggZD0iTTQ2LjU2IDQwLjI1QzQ2LjU2IDM5LjQ3IDQ2LjQ5IDM4LjcyIDQ2LjM2IDM4SDM2VjQyLjI2SDQxLjkyQzQxLjY2IDQzLjYgNDAuOTggNDQuODEgMzkuOTIgNDUuNjFWNDguNzlINDMuMzZDNDUuMzYgNDYuOSA0Ni41NiA0My44IDQ2LjU2IDQwLjI1WiIgZmlsbD0iIzQyODVGNCIvPgo8cGF0aCBkPSJNMzYgNTFDMzkuMjQgNTEgNDEuOTUgNDkuOTIgNDMuMzYgNDguNzlMMzkuOTIgNDUuNjFDMzguODkgNDYuMzEgMzcuNTQgNDYuNzIgMzYgNDYuNzJDMzIuODggNDYuNzIgMzAuMjMgNDQuODIgMjkuMzMgNDIuMTdIMjUuODNWNDUuMzNDMjcuOTMgNDkuNDkgMzEuNTQgNTEgMzYgNTFaIiBmaWxsPSIjMzRBODUzIi8+CjxwYXRoIGQ9Ik0yOS4zMyA0Mi4xN0MyOS4xIDQxLjQ3IDI4Ljk3IDQwLjc0IDI4Ljk3IDQwQzI4Ljk3IDM5LjI2IDI5LjEgMzguNTMgMjkuMzMgMzcuODNWMzQuNjdIMjUuODNDMjUuMDYgMzYuMDkgMjUgMzcuOTkgMjUgNDBDMjUgNDIuMDEgMjUuNCA0My45MSAyNi4xNyA0NS4zM0wyOS4zMyA0Mi4xN1oiIGZpbGw9IiNGQkJDMDQiLz4KPHBhdGggZD0iTTM2IDMzLjI4QzM3LjY3IDMzLjI4IDM5LjE2IDMzLjg5IDQwLjMzIDM1LjA2TDQzLjM2IDMyLjAzQzQxLjk1IDMwLjcxIDM5LjI0IDI5IDM2IDI5QzMxLjU0IDI5IDI3LjkzIDMwLjUxIDI1LjgzIDM0LjY3TDI5LjMzIDM3LjgzQzMwLjIzIDM1LjE4IDMyLjg4IDMzLjI4IDM2IDMzLjI4WiIgZmlsbD0iI0VBNDMzNSIvPgo8L3N2Zz4K');
+}
+
+.github-logo {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iNDAiIGZpbGw9IiMzMzMiLz4KPHBhdGggZD0iTTQwIDI4QzMzLjM3MyAyOCAyOCAzMy4zNzMgMjggNDBDMjggNDUuMzAzIDMxLjQzOCA0OS43OTkgMzYuMjA3IDUxLjM4N0MzNi44MDYgNTEuNDk2IDM3LjAyNyA1MS4xMzQgMzcuMDI3IDUwLjgzMUMzNy4wMjcgNTAuNTY4IDM3LjAxOCA0OS43NjcgMzcuMDEzIDQ4LjY4QzMzLjU0IDQ5LjQ1MyAzMi43OTIgNDYuOTEzIDMyLjc5MiA0Ni45MTNDMzIuMjU4IDQ1LjQ2IDMxLjQ1MiA0NS4xMDEgMzEuNDUyIDQ1LjEwMUMzMC4zMTIgNDQuMTMxIDMxLjU1NCA0NC4xNDcgMzEuNTU0IDQ0LjE0N0MzMi44MDggNDQuMjM5IDMzLjQ4IDQ1LjU4MSAzMy40OCA0NS41ODFDMzQuNDU4IDQ3LjM1OSAzNi4wMzEgNDYuNjE3IDM3LjA1NCA0Ni4wNThDMzcuMTY0IDQ1LjI1MiAzNy40OTEgNDQuNDE2IDM3Ljg1OCA0My44MzVDMzQuMTU2IDQzLjQ5OSAzMS4zNjggNDEuOTA5IDMxLjM2OCAzNi44MTdDMzEuMzY4IDM1LjY1NCAzMS4wNjIgMzQuNTUxIDMzLjYwMiAzMy4zNTdDMzMuNzAyIDMyLjc2MiAzNC4yOTYgMzEuMzIzIDMzLjIwMiAzMC42ODdDMzMuMjAyIDMwLjY4NyAzNC4yMDggMzAuMzI4IDM3LjAwMiAzMi43NjJDMzguNTYgMzIuMjA2IDQwLjE5NCAzMS45NzkgNDAuMDEzIDMxLjk1N0M0MC4wMTMgMzEuOTU3IDQwLjAwOSAzMS45NTcgNDAuMDA5IDMxLjk1N1oiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=');
+}
+
+.auth-card h1 {
+    color: #1976d2;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.auth-card p {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.auth-btn {
+    background: linear-gradient(135deg, #1976d2 0%, #42a5f5 100%);
+    border: none;
+    border-radius: 12px;
+    padding: 0.75rem 2rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    color: white;
+    margin: 0.5rem;
+    min-width: 150px;
+}
+
+.auth-btn:hover {
+    background: linear-gradient(135deg, #1565c0 0%, #1976d2 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(25, 118, 210, 0.3);
+    color: white;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    border: none;
+    border-radius: 12px;
+    padding: 0.75rem 2rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    color: white;
+    margin: 0.5rem;
+    min-width: 150px;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(108, 117, 125, 0.3);
+    color: white;
+}
+
+.provider-google .auth-btn {
+    background: linear-gradient(135deg, #db4437 0%, #dd5144 100%);
+}
+
+.provider-github .auth-btn {
+    background: linear-gradient(135deg, #24292e 0%, #2f363d 100%);
+}
+
+.account-info {
+    background: #f8f9fc;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border: 1px solid #e3eafc;
+}
+
+.account-info h3 {
+    color: #1976d2;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.account-info p {
+    margin: 0.5rem 0;
+    color: #555;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="provider-logo {% if account.provider == 'google' %}google-logo{% elif account.provider == 'github' %}github-logo{% endif %}"></div>
+        
+        <h1>Підключення аккаунту</h1>
+        <p>Ви готові підключити ваш аккаунт <strong>{{ account.provider|title }}</strong> до нашого сайту.</p>
+        
+        {% if account %}
+        <div class="account-info">
+            <h3>Інформація про аккаунт:</h3>
+            {% if account.extra_data.name %}
+            <p><strong>Ім'я:</strong> {{ account.extra_data.name }}</p>
+            {% endif %}
+            {% if account.extra_data.email %}
+            <p><strong>Email:</strong> {{ account.extra_data.email }}</p>
+            {% endif %}
+            {% if account.extra_data.login %}
+            <p><strong>Логін:</strong> {{ account.extra_data.login }}</p>
+            {% endif %}
+        </div>
+        {% endif %}
+        
+        <form method="post">
+            {% csrf_token %}
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+            
+            <div class="provider-{{ account.provider }}">
+                <button type="submit" class="btn auth-btn">
+                    Підключити аккаунт
+                </button>
+            </div>
+            
+            <br>
+            <a href="{% url 'account_login' %}" class="btn btn-secondary">Скасувати</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

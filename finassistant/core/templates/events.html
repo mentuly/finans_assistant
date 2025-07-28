@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Події | Фінансовий помічник{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Події</h1>
+    <a href="{% url 'add_event' %}" class="btn btn-primary">+ Додати подію</a>
+</div>
+
+{% if events %}
+    <div class="row">
+        {% for event in events %}
+        <div class="col-md-6 col-lg-4 mb-3">
+            <div class="card h-100 {% if event.completed %}bg-light{% endif %}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title {% if event.completed %}text-muted text-decoration-line-through{% endif %}">
+                            {{ event.title }}
+                        </h5>
+                        <span class="badge {% if event.priority == 'high' %}bg-danger{% elif event.priority == 'medium' %}bg-warning{% else %}bg-secondary{% endif %}">
+                            {{ event.get_priority_display }}
+                        </span>
+                    </div>
+                    
+                    {% if event.description %}
+                        <p class="card-text {% if event.completed %}text-muted{% endif %}">{{ event.description }}</p>
+                    {% endif %}
+                    
+                    <div class="mb-2">
+                        <small class="text-muted">
+                            <i class="bi bi-calendar"></i> {{ event.date }}
+                        </small>
+                    </div>
+                    
+                    {% if event.amount %}
+                        <div class="mb-2">
+                            <span class="badge bg-info">{{ event.amount }} ₴</span>
+                        </div>
+                    {% endif %}
+                    
+                    {% if event.category %}
+                        <div class="mb-3">
+                            <span class="badge {% if event.category.type == 'income' %}bg-success{% else %}bg-danger{% endif %}">
+                                {{ event.category.name }}
+                            </span>
+                        </div>
+                    {% endif %}
+                    
+                    <a href="{% url 'toggle_event' event.id %}" 
+                       class="btn {% if event.completed %}btn-outline-secondary{% else %}btn-success{% endif %} btn-sm">
+                        {% if event.completed %}
+                            Відновити
+                        {% else %}
+                            Виконано
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="text-center py-5">
+        <h3 class="text-muted">Поки що немає подій</h3>
+        <p class="text-muted">Додайте свою першу подію, щоб розпочати планування</p>
+        <a href="{% url 'add_event' %}" class="btn btn-primary">Додати подію</a>
+    </div>
+{% endif %}
+{% endblock %}

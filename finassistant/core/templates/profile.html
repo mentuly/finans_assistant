@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Профіль | Фінансовий помічник{% endblock %}
+{% block content %}
+<h1>Профіль користувача</h1>
+<div class="d-flex align-items-center gap-4 mb-4">
+    {% if user.avatar %}
+        <img src="{{ user.avatar.url }}" class="rounded-circle" style="width:96px;height:96px;object-fit:cover;">
+    {% else %}
+        <img src="{% static 'img/default-avatar.png' %}" class="rounded-circle" style="width:96px;height:96px;object-fit:cover;">
+    {% endif %}
+    <form action="{% url 'profile' %}" method="post" enctype="multipart/form-data" class="ms-3">
+        {% csrf_token %}
+        <label for="id_avatar" class="avatar-upload-label">Завантажити нову аватарку</label>
+        <input type="file" name="avatar" id="id_avatar" accept="image/*" onchange="this.form.submit()">
+    </form>
+</div>
+<ul class="list-group list-group-flush mb-3">
+    <li class="list-group-item"><b>Ім'я користувача:</b> {{ user.username }}</li>
+    <li class="list-group-item"><b>Email:</b> {{ user.email }}</li>
+</ul>
+<a href="{% url 'account_change_password' %}" class="btn btn-outline-primary animated-btn">Змінити пароль</a>
+<a href="{% url 'account_logout' %}" class="btn btn-outline-danger animated-btn ms-2">Вийти</a>
+{% endblock %}

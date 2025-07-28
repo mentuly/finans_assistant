@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Дашборд | Фінансовий помічник{% endblock %}
+{% block content %}
+<h1>Дашборд</h1>
+<div class="row g-4">
+    <div class="col-md-6 col-lg-3">
+        <div class="card p-3 text-center">
+            <h3>Баланс</h3>
+            <p class="display-6">{{ balance }} ₴</p>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card p-3 text-center">
+            <h3>Дохід (місяць)</h3>
+            <p class="display-6 text-success">{{ income }} ₴</p>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card p-3 text-center">
+            <h3>Витрати (місяць)</h3>
+            <p class="display-6 text-danger">{{ expenses }} ₴</p>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card p-3 text-center">
+            <h3>Подій</h3>
+            <p class="display-6">{{ events_count }}</p>
+        </div>
+    </div>
+</div>
+<div class="mt-5">
+    <h2>Аналітика</h2>
+    <canvas id="financeChart" height="120"></canvas>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('financeChart').getContext('2d');
+const financeChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: {{ chart_labels|safe }},
+        datasets: [
+            {
+                label: 'Дохід',
+                data: {{ chart_income|safe }},
+                backgroundColor: '#4caf50',
+            },
+            {
+                label: 'Витрати',
+                data: {{ chart_expenses|safe }},
+                backgroundColor: '#f44336',
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: { legend: { position: 'top' } }
+    }
+});
+</script>
+{% endblock %}
