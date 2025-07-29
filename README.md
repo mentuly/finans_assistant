@@ -47,7 +47,7 @@
 ### Крок 1: Встановлення
 ```bash
 # Клонування репозиторію
-git clone https://github.com/SMatvii/finassistant.git
+git clone https://github.com/mentuly/finans_assistant.git
 cd finassistant
 
 # Встановлення залежностей
