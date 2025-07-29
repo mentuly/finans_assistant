@@ -5,7 +5,7 @@
 </div>
 
 
-**Сучасний особистий фінансовий менеджер на Django з красивим інтерфейсом та потужними можливостями*
+**Сучасний особистий фінансовий менеджер на Django з красивим інтерфейсом та потужними можливостями**
 
 ![Django](https://img.shields.io/badge/Django-4.2+-092E20?logo=django&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3.12+-3776AB?logo=python&logoColor=white)
